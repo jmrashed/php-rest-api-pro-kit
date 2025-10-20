@@ -60,8 +60,26 @@ cp .env.example .env
 
 ### 3. Database Setup
 ```bash
-# Import the database schema
+# Option 1: Import the complete database schema
 mysql -u root -p < app/database/Database.sql
+
+# Option 2: Use migration system (recommended)
+php migrate.php fresh  # Creates database, runs migrations and seeders
+```
+
+#### Migration Commands
+```bash
+# Run migrations only
+php migrate.php migrate
+
+# Run seeders only
+php migrate.php seed
+
+# Rollback all migrations
+php migrate.php rollback
+
+# Fresh migration (rollback + migrate + seed)
+php migrate.php fresh
 ```
 
 ### 4. Start Development Server
@@ -76,6 +94,23 @@ docker-compose up -d
 ### 5. Test the API
 ```bash
 curl http://localhost:8000/api/health
+```
+
+### 6. Sample Login Credentials
+After running migrations and seeders, use these credentials to test the API:
+
+```bash
+# Admin User
+Email: admin@hrms.com
+Password: admin123
+
+# HR Manager
+Email: hr@hrms.com
+Password: admin123
+
+# Employees
+Email: john@hrms.com, jane@hrms.com, mike@hrms.com
+Password: admin123
 ```
 
 ## 📚 API Endpoints
@@ -116,6 +151,20 @@ curl -X POST http://localhost:8000/api/auth/login \
 curl -X GET http://localhost:8000/api/users \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
+
+## 🗄️ Database Schema
+
+The HRMS includes the following tables:
+
+- **users** - Employee accounts with roles (admin, hr, employee)
+- **departments** - Company departments
+- **employee_profiles** - Extended employee information
+- **attendance** - Daily attendance tracking
+- **leave_types** - Leave categories (Annual, Sick, etc.)
+- **leave_requests** - Leave applications with approval workflow
+- **payroll** - Monthly salary processing
+- **performance_reviews** - Employee performance evaluations
+- **tokens** - JWT authentication tokens
 
 ## 🏗️ Architecture
 

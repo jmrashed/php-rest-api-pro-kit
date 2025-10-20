@@ -2,7 +2,7 @@
 $servername = "localhost";
 $username   = "root";
 $password   = "";
-$database   = "test_db";
+$database   = "hrms_db";
 
 $conn = new mysqli($servername, $username, $password, $database);
 

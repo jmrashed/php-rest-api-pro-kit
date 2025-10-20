@@ -4,7 +4,7 @@ namespace App\Core;
 
 use PDO;
 use PDOException;
-use App\Config\Env;
+use App\Core\Config;
 
 class Database
 {
@@ -13,12 +13,12 @@ class Database
 
     private function __construct()
     {
-        $db_connection = Env::get('DB_CONNECTION', 'mysql');
-        $db_host = Env::get('DB_HOST', '127.0.0.1');
-        $db_port = Env::get('DB_PORT', '3306');
-        $db_database = Env::get('DB_DATABASE', 'api_starter_kit');
-        $db_username = Env::get('DB_USERNAME', 'root');
-        $db_password = Env::get('DB_PASSWORD', '');
+        $db_connection = Config::get('DB_CONNECTION', 'mysql');
+        $db_host = Config::get('DB_HOST', '127.0.0.1');
+        $db_port = Config::get('DB_PORT', '3306');
+        $db_database = Config::get('DB_DATABASE', 'hrms_db');
+        $db_username = Config::get('DB_USERNAME', 'root');
+        $db_password = Config::get('DB_PASSWORD', '');
 
         $dsn = "{$db_connection}:host={$db_host};port={$db_port};dbname={$db_database}";
 
@@ -43,5 +43,15 @@ class Database
     public function getConnection()
     {
         return $this->connection;
+    }
+
+    public function exec($sql)
+    {
+        return $this->connection->exec($sql);
+    }
+
+    public function query($sql)
+    {
+        return $this->connection->query($sql);
     }
 }

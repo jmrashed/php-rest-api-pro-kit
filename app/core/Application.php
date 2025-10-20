@@ -28,6 +28,7 @@ class Application
 
     private function loadRoutes()
     {
+        $router = $this->router;
         require_once APP_PATH . '/routes/api.php';
     }
 }
