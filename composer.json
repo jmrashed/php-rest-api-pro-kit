@@ -14,7 +14,7 @@
     ],
     "support": {
         "email": "jmrashed@gmail.com",
-        "issues": "mailto:jmrashed@gmail.com"
+        "issues": "https://github.com/jmrashed/php-rest-api-pro-kit/issues"
     },
     "autoload": {
         "psr-4": {

@@ -178,12 +178,21 @@ docker-compose down
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 👨‍💻 Author
 
-**Md Rashedul Islam**
-- GitHub: [@jmrashed](https://github.com/jmrashed)
-- LinkedIn: [Md Rashedul Islam](https://linkedin.com/in/jmrashed)
+## Author
 
-## ⭐ Show your support
+**Md Rasheduzzaman**  
+Full-Stack Software Engineer & Technical Project Manager  
 
-Give a ⭐️ if this project helped you!
+Building scalable, secure & AI-powered SaaS platforms across ERP, HRMS, CRM, LMS, and E-commerce domains.  
+Over 10 years of experience leading full-stack teams, cloud infrastructure, and enterprise-grade software delivery.
+
+**🌐 Portfolio:** [jmrashed.github.io](https://jmrashed.github.io/)  
+**✉️ Email:** [jmrashed@gmail.com](mailto:jmrashed@gmail.com)  
+**💼 LinkedIn:** [linkedin.com/in/jmrashed](https://www.linkedin.com/in/jmrashed/)  
+**📝 Blog:** [medium.com/@jmrashed](https://medium.com/@jmrashed)  
+**💻 GitHub:** [github.com/jmrashed](https://github.com/jmrashed)
+
+---
+
+> *“Need a Reliable Software Partner? I build scalable, secure & modern solutions for startups and enterprises.”*
