@@ -36,4 +36,10 @@ class Response
         echo $this->body;
         exit;
     }
+
+    public static function json($data, $statusCode = 200)
+    {
+        $response = new self();
+        return $response->setStatusCode($statusCode)->withJson($data);
+    }
 }

@@ -2,6 +2,7 @@
 
 use App\Core\Router;
 use App\Controllers\UserController;
+use App\Controllers\HealthController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\CorsMiddleware;
 
@@ -9,6 +10,8 @@ use App\Middleware\CorsMiddleware;
 
 $router->group('/api', [CorsMiddleware::class], function (Router $router) {
     // Public routes
+    $router->addRoute('GET', '/health', [HealthController::class, 'check']);
+    $router->addRoute('GET', '/health/info', [HealthController::class, 'info']);
     $router->addRoute('POST', '/register', [UserController::class, 'register']);
     $router->addRoute('POST', '/login', [UserController::class, 'login']);
 

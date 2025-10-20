@@ -10,9 +10,14 @@ class Router
 
     public function addRoute($method, $uri, $handler, $middleware = [])
     {
+        $fullUri = $uri;
+        foreach ($this->routeGroups as $group) {
+            $fullUri = $group['prefix'] . $fullUri;
+        }
+        
         $this->routes[] = [
             'method' => $method,
-            'uri' => $uri,
+            'uri' => $fullUri,
             'handler' => $handler,
             'middleware' => $middleware
         ];
@@ -35,7 +40,7 @@ class Router
         return $middlewares;
     }
 
-    public function dispatch(Request $request, Response $response)
+    public function dispatch(Request $request)
     {
         $requestUri = $request->getUri();
         $requestMethod = $request->getMethod();
@@ -48,20 +53,21 @@ class Router
                 $handler = $route['handler'];
                 $middleware = $this->resolveMiddleware($route['middleware']);
 
-                $this->runMiddleware($request, $response, $middleware, function (Request $request) use ($handler, $matches, $response) {
+                $this->runMiddleware($request, $middleware, function (Request $request) use ($handler, $matches) {
                     if (is_callable($handler)) {
-                        call_user_func_array($handler, array_merge([$request, $response], $matches));
+                        $response = call_user_func_array($handler, array_merge([$request], $matches));
                     } elseif (is_array($handler) && count($handler) === 2) {
                         list($controllerName, $methodName) = $handler;
                         $controller = new $controllerName();
-                        call_user_func_array([$controller, $methodName], array_merge([$request, $response], $matches));
+                        $response = call_user_func_array([$controller, $methodName], array_merge([$request], $matches));
                     }
+                    if ($response) $response->send();
                 });
                 return;
             }
         }
 
-        Response::json(['status' => 'error', 'message' => 'Not Found'], 404);
+        Response::json(['status' => 'error', 'message' => 'Not Found'], 404)->send();
     }
 
     private function buildRegexPattern(string $uri): string
@@ -71,11 +77,11 @@ class Router
         return "#^" . $pattern . "$#";
     }
 
-    private function runMiddleware(Request $request, Response $response, array $middleware, callable $coreHandler)
+    private function runMiddleware(Request $request, array $middleware, callable $coreHandler)
     {
         $chain = array_reverse($middleware);
 
-        $next = function (Request $req) use (&$chain, $response, $coreHandler) {
+        $next = function (Request $req) use (&$chain, $coreHandler) {
             if (empty($chain)) {
                 return $coreHandler($req);
             }

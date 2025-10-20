@@ -22,8 +22,7 @@ class Application
     public function run()
     {
         $request = new Request();
-        $response = $this->router->dispatch($request);
-        $response->send();
+        $this->router->dispatch($request);
     }
 
     private function loadRoutes()
