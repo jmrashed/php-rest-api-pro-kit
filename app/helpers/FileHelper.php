@@ -34,9 +34,21 @@ class FileHelper
         return false;
     }
 
-    public static function getSize($filepath)
+    public static function getFileInfo($filepath)
     {
         $fullPath = UPLOADS_PATH . '/' . $filepath;
-        return file_exists($fullPath) ? filesize($fullPath) : 0;
+        if (file_exists($fullPath)) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mimeType = finfo_file($finfo, $fullPath);
+            finfo_close($finfo);
+
+            return [
+                'filename' => basename($fullPath),
+                'size' => filesize($fullPath),
+                'mime_type' => $mimeType,
+                'url' => '/storage/uploads/' . $filepath // Assuming public access via /storage/uploads
+            ];
+        }
+        return null;
     }
 }

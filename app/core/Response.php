@@ -42,4 +42,22 @@ class Response
         $response = new self();
         return $response->setStatusCode($statusCode)->withJson($data);
     }
+
+    public static function success($message = 'Success', $data = [], $statusCode = 200)
+    {
+        return (new self())->setStatusCode($statusCode)->withJson([
+            'status' => 'success',
+            'message' => $message,
+            'data' => $data
+        ]);
+    }
+
+    public static function error($message = 'Error', $statusCode = 500, $errors = [])
+    {
+        return (new self())->setStatusCode($statusCode)->withJson([
+            'status' => 'error',
+            'message' => $message,
+            'errors' => $errors
+        ]);
+    }
 }

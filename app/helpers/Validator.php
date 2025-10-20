@@ -57,6 +57,11 @@ class Validator
         return empty($this->errors);
     }
 
+    public function isValid(): bool
+    {
+        return empty($this->errors);
+    }
+
     private function addError($field, $message)
     {
         if (!isset($this->errors[$field])) {

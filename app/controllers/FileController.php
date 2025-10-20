@@ -22,12 +22,28 @@ class FileController extends Controller
         if ($filepath) {
             return Response::json([
                 'message' => 'File uploaded successfully',
-                'filepath' => $filepath,
-                'size' => FileHelper::getSize($filepath)
+                'file' => FileHelper::getFileInfo($filepath)
             ]);
         }
         
         return Response::json(['error' => 'Upload failed'], 500);
+    }
+
+    public function getFile($id)
+    {
+        $filepath = $_GET['filepath'] ?? null;
+
+        if (!$filepath) {
+            return Response::json(['error' => 'Filepath required'], 400);
+        }
+
+        $fileInfo = FileHelper::getFileInfo($filepath);
+
+        if ($fileInfo) {
+            return Response::json($fileInfo);
+        }
+
+        return Response::json(['error' => 'File not found'], 404);
     }
 
     public function delete($id)

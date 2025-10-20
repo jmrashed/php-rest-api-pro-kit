@@ -19,6 +19,11 @@ class UserService
         return $this->userModel->all();
     }
 
+    public function getAllUsersPaginated($perPage, $page)
+    {
+        return $this->userModel->paginate($perPage, $page);
+    }
+
     public function getUserById($id)
     {
         return $this->userModel->find($id);

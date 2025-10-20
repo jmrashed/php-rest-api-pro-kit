@@ -20,16 +20,17 @@ class AuthService
     public function login($email, $password)
     {
         $user = $this->userModel->findByEmail($email);
-        
+
         if (!$user || !password_verify($password, $user['password'])) {
             return false;
         }
 
-        $token = JwtHelper::generate(['user_id' => $user['id']]);
+        $expirationTime = time() + (60 * 60); // 1 hour from now
+        $token = JwtHelper::generateToken(['user_id' => $user['id'], 'exp' => $expirationTime]);
         $this->tokenModel->create([
             'user_id' => $user['id'],
             'token' => $token,
-            'expires_at' => date('Y-m-d H:i:s', time() + 3600)
+            'expires_at' => date('Y-m-d H:i:s', $expirationTime)
         ]);
 
         return [
@@ -53,8 +54,15 @@ class AuthService
         
         if ($userId) {
             $user = $this->userModel->find($userId);
-            $token = JwtHelper::generate(['user_id' => $userId]);
-            
+            $expirationTime = time() + (60 * 60); // 1 hour from now
+            $token = JwtHelper::generateToken(['user_id' => $userId, 'exp' => $expirationTime]);
+
+            $this->tokenModel->create([
+                'user_id' => $userId,
+                'token' => $token,
+                'expires_at' => date('Y-m-d H:i:s', $expirationTime)
+            ]);
+
             return [
                 'token' => $token,
                 'user' => [

@@ -60,7 +60,9 @@ class UserController extends Controller
 
     public function index(Request $request, Response $response)
     {
-        $users = $this->userService->getAllUsers();
+        $perPage = $request->get('per_page', 10);
+        $page = $request->get('page', 1);
+        $users = $this->userService->getAllUsersPaginated($perPage, $page);
         return $this->jsonResponse($users);
     }
 

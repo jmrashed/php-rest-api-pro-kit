@@ -41,4 +41,26 @@ class Request
     {
         return json_decode($this->body, true);
     }
+
+    public function getHeader($name)
+    {
+        return $this->headers[$name] ?? null;
+    }
+
+    private $user;
+
+    public function setUser(array $user)
+    {
+        $this->user = $user;
+    }
+
+    public function user()
+    {
+        return $this->user;
+    }
+
+    public function json(): array
+    {
+        return json_decode($this->body, true) ?? [];
+    }
 }
