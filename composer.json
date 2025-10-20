@@ -1,0 +1,46 @@
+{
+    "name": "jmrashed/api-starter-kit",
+    "description": "A raw PHP API starter kit without frameworks.",
+    "type": "project",
+    "license": "MIT",
+    "homepage": "https://www.linkedin.com/in/jmrashed/",
+    "keywords": [
+        "php",
+        "api",
+        "starter-kit",
+        "leetcode",
+        "hackerrank",
+        "jmrashed"
+    ],
+    "support": {
+        "email": "jmrashed@gmail.com",
+        "issues": "mailto:jmrashed@gmail.com"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "JM Rashed",
+            "email": "jmrashed@gmail.com",
+            "homepage": "https://www.linkedin.com/in/jmrashed/",
+            "role": "Developer"
+        }
+    ],
+    "extra": {
+        "social": {
+            "linkedin": "https://www.linkedin.com/in/jmrashed/",
+            "leetcode": "https://leetcode.com/u/jmrashed/",
+            "hackerrank": "https://www.hackerrank.com/profile/jmrashed",
+            "whatsapp": "https://wa.me/8801734446514"
+        }
+    },
+    "require": {
+        "vlucas/phpdotenv": "^5.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    }
+}

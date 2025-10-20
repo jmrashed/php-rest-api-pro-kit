@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Core;
+
+class Request
+{
+    private $method;
+    private $uri;
+    private $headers;
+    private $body;
+
+    public function __construct()
+    {
+        $this->method = $_SERVER['REQUEST_METHOD'];
+        $this->uri = $_SERVER['REQUEST_URI'];
+        $this->headers = getallheaders();
+        $this->body = file_get_contents('php://input');
+    }
+
+    public function getMethod()
+    {
+        return $this->method;
+    }
+
+    public function getUri()
+    {
+        return $this->uri;
+    }
+
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
+
+    public function getBody()
+    {
+        return $this->body;
+    }
+
+    public function getJsonBody()
+    {
+        return json_decode($this->body, true);
+    }
+}
