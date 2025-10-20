@@ -23,14 +23,14 @@ class UserController extends Controller
         $result = $this->userService->createUser($data);
 
         if (isset($result['errors'])) {
-            return $this->errorResponse($result['errors'], 422);
+            return Response::error('Validation failed', 422, $result['errors']);
         }
 
         if ($result) {
-            return $this->successResponse('User registered successfully', ['id' => $result['id']], 201);
+            return Response::success('User registered successfully', ['id' => $result['id']], 201);
         }
 
-        return $this->errorResponse('Failed to register user', 500);
+        return Response::error('Failed to register user', 500);
     }
 
     public function login(Request $request, Response $response)
@@ -40,7 +40,7 @@ class UserController extends Controller
         $password = $data['password'] ?? null;
 
         if (!$email || !$password) {
-            return $this->errorResponse('Email and password are required', 400);
+            return Response::error('Email and password are required', 400);
         }
 
         $user = $this->userService->authenticateUser($email, $password);
@@ -52,10 +52,10 @@ class UserController extends Controller
                 'email' => $user['email'],
                 'exp' => time() + (3600 * 24) // Token valid for 24 hours
             ]);
-            return $this->successResponse('Login successful', ['token' => $token]);
+            return Response::success('Login successful', ['token' => $token]);
         }
 
-        return $this->errorResponse('Invalid credentials', 401);
+        return Response::error('Invalid credentials', 401);
     }
 
     public function index(Request $request, Response $response)
@@ -63,16 +63,16 @@ class UserController extends Controller
         $perPage = $request->get('per_page', 10);
         $page = $request->get('page', 1);
         $users = $this->userService->getAllUsersPaginated($perPage, $page);
-        return $this->jsonResponse($users);
+        return Response::success('Users retrieved successfully', $users);
     }
 
     public function show(Request $request, Response $response, $id)
     {
         $user = $this->userService->getUserById($id);
         if ($user) {
-            return $this->jsonResponse($user);
+            return Response::success('User retrieved successfully', $user);
         }
-        return $this->errorResponse('User not found', 404);
+        return Response::error('User not found', 404);
     }
 
     public function store(Request $request, Response $response)
@@ -81,13 +81,13 @@ class UserController extends Controller
         $result = $this->userService->createUser($data);
 
         if (isset($result['errors'])) {
-            return $this->errorResponse($result['errors'], 422);
+            return Response::error('Validation failed', 422, $result['errors']);
         }
 
         if ($result) {
-            return $this->successResponse('User created successfully', ['id' => $result['id']], 201);
+            return Response::success('User created successfully', ['id' => $result['id']], 201);
         }
-        return $this->errorResponse('Failed to create user', 500);
+        return Response::error('Failed to create user', 500);
     }
 
     public function update(Request $request, Response $response, $id)
@@ -96,20 +96,20 @@ class UserController extends Controller
         $result = $this->userService->updateUser($id, $data);
 
         if (isset($result['errors'])) {
-            return $this->errorResponse($result['errors'], 422);
+            return Response::error('Validation failed', 422, $result['errors']);
         }
 
         if ($result) {
-            return $this->successResponse('User updated successfully');
+            return Response::success('User updated successfully');
         }
-        return $this->errorResponse('Failed to update user', 500);
+        return Response::error('Failed to update user', 500);
     }
 
     public function destroy(Request $request, Response $response, $id)
     {
         if ($this->userService->deleteUser($id)) {
-            return $this->successResponse('User deleted successfully', [], 204);
+            return Response::success('User deleted successfully', [], 204);
         }
-        return $this->errorResponse('Failed to delete user', 500);
+        return Response::error('Failed to delete user', 500);
     }
 }

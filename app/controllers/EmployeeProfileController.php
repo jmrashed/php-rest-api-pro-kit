@@ -13,16 +13,16 @@ class EmployeeProfileController extends Controller
         $perPage = $this->request->get('per_page', 10);
         $page = $this->request->get('page', 1);
         $employeeProfiles = EmployeeProfile::paginate($perPage, $page);
-        return Response::json($employeeProfiles);
+        return Response::success('Employee Profiles retrieved successfully', $employeeProfiles);
     }
 
     public function show($id)
     {
         $employeeProfile = EmployeeProfile::find($id);
         if (!$employeeProfile) {
-            return Response::json(['error' => 'Employee Profile not found'], 404);
+            return Response::error('Employee Profile not found', 404);
         }
-        return Response::json($employeeProfile);
+        return Response::success('Employee Profile retrieved successfully', $employeeProfile);
     }
 
     public function store()
@@ -36,16 +36,16 @@ class EmployeeProfileController extends Controller
         $employeeProfile->salary = $data['salary'] ?? null;
 
         if ($employeeProfile->save()) {
-            return Response::json(['message' => 'Employee Profile created successfully', 'employee_profile' => $employeeProfile], 201);
+            return Response::success('Employee Profile created successfully', ['employee_profile' => $employeeProfile], 201);
         }
-        return Response::json(['error' => 'Failed to create employee profile'], 500);
+        return Response::error('Failed to create employee profile', 500);
     }
 
     public function update($id)
     {
         $employeeProfile = EmployeeProfile::find($id);
         if (!$employeeProfile) {
-            return Response::json(['error' => 'Employee Profile not found'], 404);
+            return Response::error('Employee Profile not found', 404);
         }
 
         $data = $this->request->json();
@@ -56,21 +56,21 @@ class EmployeeProfileController extends Controller
         $employeeProfile->salary = $data['salary'] ?? $employeeProfile->salary;
 
         if ($employeeProfile->save()) {
-            return Response::json(['message' => 'Employee Profile updated successfully', 'employee_profile' => $employeeProfile]);
+            return Response::success('Employee Profile updated successfully', ['employee_profile' => $employeeProfile]);
         }
-        return Response::json(['error' => 'Failed to update employee profile'], 500);
+        return Response::error('Failed to update employee profile', 500);
     }
 
     public function destroy($id)
     {
         $employeeProfile = EmployeeProfile::find($id);
         if (!$employeeProfile) {
-            return Response::json(['error' => 'Employee Profile not found'], 404);
+            return Response::error('Employee Profile not found', 404);
         }
 
         if ($employeeProfile->delete()) {
-            return Response::json(['message' => 'Employee Profile deleted successfully']);
+            return Response::success('Employee Profile deleted successfully');
         }
-        return Response::json(['error' => 'Failed to delete employee profile'], 500);
+        return Response::error('Failed to delete employee profile', 500);
     }
 }
