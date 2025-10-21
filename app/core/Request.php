@@ -60,6 +60,7 @@ class Request
     }
 
     private $user;
+    private $apiVersion;
 
     public function setUser(array $user)
     {
@@ -69,6 +70,16 @@ class Request
     public function user()
     {
         return $this->user;
+    }
+
+    public function setApiVersion(string $version): void
+    {
+        $this->apiVersion = $version;
+    }
+
+    public function getApiVersion(): ?string
+    {
+        return $this->apiVersion;
     }
 
     public function json(): array

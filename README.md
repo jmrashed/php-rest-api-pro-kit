@@ -22,14 +22,18 @@ A production-ready Raw PHP REST API Starter Kit with JWT authentication, user ma
 - ✅ **API Documentation** - Complete endpoint docs
 - ✅ **Debug Bar** - Development debugging toolbar with performance monitoring
 - ✅ **CLI Support** - Command-line interface for development tasks
+- ✅ **API Versioning** - Multiple API versions with backward compatibility
 
 ## 📁 Project Structure
 
 ```
 ├── app/
+│   ├── api/            # API versioning system
 │   ├── cli/            # CLI commands and console
 │   ├── config/          # Configuration files
 │   ├── controllers/     # Request handlers
+│   │   ├── v1/         # Version 1 controllers
+│   │   └── v2/         # Version 2 controllers
 │   ├── core/           # Core framework classes
 │   ├── database/       # Migrations and seeders
 │   ├── debugbar/       # Debug bar system
@@ -38,6 +42,10 @@ A production-ready Raw PHP REST API Starter Kit with JWT authentication, user ma
 │   ├── middleware/     # Request middleware
 │   ├── models/         # Data models
 │   ├── routes/         # Route definitions
+│   │   ├── api.php     # Legacy API routes (backward compatibility)
+│   │   ├── api_v1.php  # Version 1 API routes
+│   │   ├── api_v2.php  # Version 2 API routes
+│   │   └── web.php     # Web routes
 │   ├── services/       # Business logic
 │   └── tests/          # Test files
 ├── console             # CLI entry point
@@ -130,41 +138,64 @@ Password: admin123
 
 ## 📚 API Endpoints
 
-### Authentication
+### Versioned Endpoints
+
+#### V1 API (Standard Format)
+- `GET /api/v1/health` - Health check
+- `POST /api/v1/auth/register` - Register new user
+- `POST /api/v1/auth/login` - Login user
+- `GET /api/v1/users` - Get all users (paginated)
+- `GET /api/v1/users/{id}` - Get user by ID
+- `POST /api/v1/users` - Create user
+- `PUT /api/v1/users/{id}` - Update user
+- `DELETE /api/v1/users/{id}` - Delete user
+
+#### V2 API (Enhanced Format)
+- `GET /api/v2/health` - Health check with metadata
+- `POST /api/v2/auth/register` - Register with enhanced response
+- `POST /api/v2/auth/login` - Login with structured response
+- `GET /api/v2/users` - Get users with enhanced pagination
+- `GET /api/v2/users/{id}` - Get user with metadata
+- `POST /api/v2/users` - Create user with structured response
+- `PUT /api/v2/users/{id}` - Update user with action tracking
+- `DELETE /api/v2/users/{id}` - Delete user with confirmation
+
+### Legacy Endpoints (Backward Compatibility)
+**Note:** These endpoints default to V1 behavior for backward compatibility
 - `POST /api/auth/register` - Register new user
 - `POST /api/auth/login` - Login user
 - `POST /api/auth/logout` - Logout user
-
-### Users (Protected)
 - `GET /api/users` - Get all users (paginated)
 - `GET /api/users/{id}` - Get user by ID
 - `POST /api/users` - Create user
 - `PUT /api/users/{id}` - Update user
 - `DELETE /api/users/{id}` - Delete user
-
-### Files (Protected)
 - `POST /api/files/upload` - Upload file
 - `DELETE /api/files/{id}` - Delete file
-
-### System
 - `GET /api/health` - Health check
 - `GET /api/health/info` - System info
 
 ### Example Usage
 ```bash
-# Register
+# V1 API (Explicit versioning - Recommended)
+curl -X POST http://localhost:8000/api/v1/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"name":"John Doe","email":"john@example.com","password":"password123"}'
+
+# V2 API (Enhanced responses)
+curl -X POST http://localhost:8000/api/v2/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"name":"John Doe","email":"john@example.com","password":"password123"}'
+
+# Legacy API (Backward compatibility)
 curl -X POST http://localhost:8000/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{"name":"John Doe","email":"john@example.com","password":"password123"}'
 
-# Login
-curl -X POST http://localhost:8000/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"john@example.com","password":"password123"}'
-
-# Get users (with token)
+# Version via header
 curl -X GET http://localhost:8000/api/users \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -H "X-API-Version: v2"
 ```
 
 ## 🗄️ Database Schema
@@ -258,6 +289,98 @@ timer_stop('api_call');
 
 ### Test Debug Bar
 Visit `http://localhost:8000/welcome` to see the debug bar in action.
+
+## 🔄 API Versioning
+
+The framework supports multiple API versions with backward compatibility and flexible version detection.
+
+### Version Detection Methods
+
+1. **URI Path** (Recommended)
+```bash
+GET /api/v1/users
+GET /api/v2/users
+```
+
+2. **X-API-Version Header**
+```bash
+curl -H "X-API-Version: v2" http://localhost:8000/api/users
+```
+
+3. **Accept Header**
+```bash
+curl -H "Accept: application/vnd.api+json;version=2" http://localhost:8000/api/users
+```
+
+### Available Versions
+
+#### Version 1 (v1)
+- Standard JSON responses
+- Basic error handling
+- Simple data structure
+
+```json
+{
+  "status": "success",
+  "data": {...},
+  "version": "v1"
+}
+```
+
+#### Version 2 (v2)
+- Enhanced response format
+- Structured error codes
+- Metadata inclusion
+- Timestamp tracking
+
+```json
+{
+  "success": true,
+  "data": {...},
+  "meta": {
+    "version": "v2",
+    "timestamp": "2024-10-21T10:30:00+00:00",
+    "action": "created"
+  }
+}
+```
+
+### Version-Specific Features
+
+**V1 Features:**
+- Basic CRUD operations
+- Simple response format
+- Standard HTTP status codes
+
+**V2 Features:**
+- Enhanced error handling with error codes
+- Metadata in responses
+- Improved pagination info
+- Structured error responses
+
+### Creating New Versions
+
+1. Create version directory: `app/controllers/v3/`
+2. Create versioned controllers
+3. Add route file: `app/routes/api_v3.php`
+4. Update Application.php to load new routes
+
+### Migration Strategy
+
+**For New Projects:**
+- Use explicit versioning from the start: `/api/v1/`
+- Avoid legacy endpoints
+
+**For Existing Projects:**
+- Legacy endpoints (`/api/`) remain unchanged
+- Gradually migrate clients to versioned endpoints
+- Deprecate legacy endpoints in future versions
+
+**Best Practices:**
+- Always specify version in new integrations
+- Use semantic versioning for major changes
+- Maintain at least 2 versions simultaneously
+- Provide migration guides for version changes
 
 ## 💻 CLI Support
 

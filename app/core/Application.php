@@ -30,5 +30,7 @@ class Application
         $router = $this->router;
         require_once APP_PATH . '/routes/web.php';
         require_once APP_PATH . '/routes/api.php';
+        require_once APP_PATH . '/routes/api_v1.php';
+        require_once APP_PATH . '/routes/api_v2.php';
     }
 }

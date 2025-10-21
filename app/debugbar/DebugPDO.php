@@ -38,10 +38,14 @@ class DebugPDO extends PDO
     }
 
     #[\ReturnTypeWillChange]
-    public function query($statement, $mode = PDO::ATTR_DEFAULT_FETCH_MODE, ...$fetch_mode_args)
+    public function query($statement, $mode = null, ...$fetch_mode_args)
     {
         $start = microtime(true);
-        $result = parent::query($statement, $mode, ...$fetch_mode_args);
+        if ($mode === null) {
+            $result = parent::query($statement);
+        } else {
+            $result = parent::query($statement, $mode, ...$fetch_mode_args);
+        }
         $time = microtime(true) - $start;
         
         if ($this->queryCollector) {

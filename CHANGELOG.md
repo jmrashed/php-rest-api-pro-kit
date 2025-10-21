@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2025-10-21
+
+### Added
+- **API Versioning System** - Multiple API versions with backward compatibility
+  - URI path versioning (/api/v1/, /api/v2/)
+  - Header-based version detection (X-API-Version, Accept)
+  - Version-specific controllers and responses
+  - Automatic version middleware integration
+  - Enhanced V2 response format with metadata
+  - Structured error codes and messages
+  - Backward compatibility support
+
+### Features
+- `ApiVersionMiddleware` - Automatic version detection
+- `VersionedRouter` - Route handling for different versions
+- V1 Controllers - Standard JSON responses
+- V2 Controllers - Enhanced responses with metadata
+- Multiple version detection methods
+- Flexible response transformations
+
+### API Versions
+- **V1**: Standard responses, basic error handling
+- **V2**: Enhanced metadata, structured errors, timestamps
+
+### Version Detection
+- URI path: `/api/v1/users`, `/api/v2/users`
+- Header: `X-API-Version: v2`
+- Accept: `application/vnd.api+json;version=2`
+
 ## [1.2.0] - 2025-10-21
 
 ### Added
