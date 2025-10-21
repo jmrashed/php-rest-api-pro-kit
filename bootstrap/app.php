@@ -15,6 +15,7 @@ $autoloader->register();
 
 // Load debug helpers
 require_once __DIR__ . '/../app/helpers/debug.php';
+require_once __DIR__ . '/../app/helpers/Queue.php';
 
 Env::load(dirname(__DIR__) . '/.env');
 

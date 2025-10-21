@@ -4,7 +4,7 @@
 require_once __DIR__ . '/bootstrap/app.php';
 
 use App\Cli\Console;
-use App\Cli\Commands\{MigrateCommand, ServeCommand, TestCommand, CacheCommand, MakeCommand};
+use App\Cli\Commands\{MigrateCommand, ServeCommand, TestCommand, CacheCommand, MakeCommand, QueueCommand};
 
 $console = new Console();
 
@@ -14,6 +14,7 @@ $console->register(new ServeCommand());
 $console->register(new TestCommand());
 $console->register(new CacheCommand());
 $console->register(new MakeCommand());
+$console->register(new QueueCommand());
 
 // Run console
 exit($console->run($argv));

@@ -2,6 +2,45 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0] - 2025-10-21
+
+### Added
+- **Queue System** - Background job processing with multiple drivers
+  - Database and Redis queue drivers
+  - Email queue processing with retry logic
+  - File processing jobs (resize, compress, convert)
+  - Queue worker with CLI commands
+  - Job retry and failure handling
+  - Helper functions for easy job dispatching
+  - Automatic table creation for database driver
+  - Failed job tracking and management
+
+### Features
+- `QueueManager` - Central queue management system
+- `JobInterface` - Standard job contract
+- `BaseJob` - Abstract job class with retry logic
+- `SendEmailJob` - Built-in email processing
+- `ProcessFileJob` - Built-in file processing
+- `QueueWorker` - Background job processor
+- `DatabaseDriver` - MySQL/PostgreSQL queue storage
+- `RedisDriver` - Redis-based queue storage
+
+### CLI Commands
+- `php console queue work [queue] [max-jobs]` - Start queue worker
+- `php console queue status [queue]` - Check queue status
+- `php console queue clear [queue]` - Clear queue
+
+### Helper Functions
+- `dispatch($job, $queue)` - Dispatch jobs to queue
+- `queue_email($to, $subject, $message)` - Queue email jobs
+- `queue_file_processing($path, $operation, $options)` - Queue file jobs
+- `queue_status($queue)` - Get queue size
+
+### Configuration
+- `QUEUE_DRIVER` - Set queue driver (database/redis)
+- `REDIS_HOST` - Redis server host
+- `REDIS_PORT` - Redis server port
+
 ## [1.3.0] - 2025-10-21
 
 ### Added

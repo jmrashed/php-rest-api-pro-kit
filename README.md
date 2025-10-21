@@ -23,6 +23,7 @@ A production-ready Raw PHP REST API Starter Kit with JWT authentication, user ma
 - ✅ **Debug Bar** - Development debugging toolbar with performance monitoring
 - ✅ **CLI Support** - Command-line interface for development tasks
 - ✅ **API Versioning** - Multiple API versions with backward compatibility
+- ✅ **Queue System** - Background job processing with Redis/Database drivers
 
 ## 📁 Project Structure
 
@@ -41,6 +42,10 @@ A production-ready Raw PHP REST API Starter Kit with JWT authentication, user ma
 │   ├── helpers/        # Utility classes
 │   ├── middleware/     # Request middleware
 │   ├── models/         # Data models
+│   ├── queue/          # Queue system
+│   │   ├── Drivers/    # Queue drivers (Database, Redis)
+│   │   ├── Jobs/       # Job classes
+│   │   └── Processors/ # Queue workers
 │   ├── routes/         # Route definitions
 │   │   ├── api.php     # Legacy API routes (backward compatibility)
 │   │   ├── api_v1.php  # Version 1 API routes
@@ -76,6 +81,14 @@ cp .env.example .env
 # Enable debug bar for development
 DEBUGBAR_ENABLED=true
 DEBUGBAR_ALLOWED_IPS=127.0.0.1,::1
+```
+
+**Queue System Configuration (Optional)**
+```bash
+# Queue driver (database or redis)
+QUEUE_DRIVER=database
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
 ```
 
 ### 3. Database Setup
@@ -382,6 +395,118 @@ curl -H "Accept: application/vnd.api+json;version=2" http://localhost:8000/api/u
 - Maintain at least 2 versions simultaneously
 - Provide migration guides for version changes
 
+## 🔄 Queue System
+
+The framework includes a powerful queue system for background job processing with support for multiple drivers.
+
+### Features
+- **Background Job Processing** - Asynchronous task execution
+- **Multiple Drivers** - Database and Redis support
+- **Email Queues** - Reliable email delivery
+- **File Processing** - Image resize, file conversion, compression
+- **Job Retry Logic** - Automatic retry with exponential backoff
+- **Failed Job Handling** - Dead letter queue for failed jobs
+- **CLI Workers** - Command-line queue processors
+
+### Configuration
+
+Add to your `.env` file:
+```bash
+# Queue driver (database or redis)
+QUEUE_DRIVER=database
+
+# Redis configuration (if using Redis driver)
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
+```
+
+### Usage
+
+#### Dispatching Jobs
+```php
+// Email jobs
+queue_email('user@example.com', 'Welcome!', 'Welcome message');
+
+// File processing jobs
+queue_file_processing('/path/to/image.jpg', 'resize', ['width' => 800, 'height' => 600]);
+
+// Custom jobs
+use App\Queue\Jobs\SendEmailJob;
+$job = new SendEmailJob('user@example.com', 'Subject', 'Message');
+dispatch($job, 'emails');
+```
+
+#### Processing Jobs
+```bash
+# Start queue worker
+php console queue work default
+
+# Process specific queue
+php console queue work emails
+
+# Process limited number of jobs
+php console queue work files 10
+
+# Check queue status
+php console queue status emails
+```
+
+### Built-in Job Types
+
+**SendEmailJob** - Email delivery
+- Automatic retry on failure
+- SMTP configuration support
+- HTML/text email support
+
+**ProcessFileJob** - File processing
+- Image resizing
+- File compression
+- Format conversion
+- Batch processing support
+
+### Creating Custom Jobs
+
+```php
+use App\Queue\Jobs\BaseJob;
+
+class CustomJob extends BaseJob
+{
+    private $data;
+    
+    public function __construct($data)
+    {
+        $this->data = $data;
+        $this->maxRetries = 3;
+        $this->delay = 30; // seconds
+    }
+    
+    public function handle(): bool
+    {
+        // Your job logic here
+        return true;
+    }
+    
+    public function failed(\Exception $exception): void
+    {
+        // Handle job failure
+    }
+}
+```
+
+### Queue Drivers
+
+**Database Driver**
+- Uses MySQL/PostgreSQL for job storage
+- Automatic table creation
+- Transaction support
+- No external dependencies
+
+**Redis Driver**
+- High performance
+- Atomic operations
+- Delayed job support
+- Requires Redis extension
+
 ## 💻 CLI Support
 
 The framework includes a powerful command-line interface for development tasks.
@@ -404,6 +529,11 @@ php console cache clear
 # Generate files
 php console make controller ControllerName
 php console make model ModelName
+
+# Queue management
+php console queue work [queue] [max-jobs]
+php console queue status [queue]
+php console queue clear [queue]
 
 # Show help
 php console help
@@ -429,6 +559,12 @@ php console test app/tests/Unit/UserTest.php
 
 # Clear application cache
 php console cache clear
+
+# Start queue worker
+php console queue work emails
+
+# Check queue status
+php console queue status default
 ```
 
 ## 🧪 Testing
