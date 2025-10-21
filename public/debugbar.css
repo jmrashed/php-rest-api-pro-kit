@@ -1,0 +1,73 @@
+#debugbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #2d3748;
+    color: #e2e8f0;
+    font-family: monospace;
+    font-size: 12px;
+    z-index: 999999;
+    border-top: 2px solid #4a5568;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#debugbar-tabs {
+    display: flex;
+    background: #1a202c;
+    border-bottom: 1px solid #4a5568;
+}
+
+.debugbar-tab {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-right: 1px solid #4a5568;
+    transition: background 0.2s;
+}
+
+.debugbar-tab:hover, .debugbar-tab.active {
+    background: #2d3748;
+}
+
+.debugbar-content {
+    padding: 10px;
+    display: none;
+}
+
+.debugbar-content.active {
+    display: block;
+}
+
+.debugbar-query {
+    margin: 5px 0;
+    padding: 5px;
+    background: #1a202c;
+    border-radius: 3px;
+}
+
+.debugbar-time {
+    color: #68d391;
+    font-weight: bold;
+}
+
+.debugbar-message {
+    margin: 2px 0;
+    padding: 2px 5px;
+}
+
+.debugbar-message.error { color: #fc8181; }
+.debugbar-message.warning { color: #f6e05e; }
+.debugbar-message.info { color: #63b3ed; }
+
+#debugbar-toggle {
+    position: absolute;
+    top: -25px;
+    right: 10px;
+    background: #2d3748;
+    color: #e2e8f0;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px 3px 0 0;
+}

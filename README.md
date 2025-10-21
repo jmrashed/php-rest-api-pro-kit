@@ -20,6 +20,7 @@ A production-ready Raw PHP REST API Starter Kit with JWT authentication, user ma
 - ✅ **Docker Support** - Containerized deployment
 - ✅ **PHPUnit Testing** - Comprehensive test suite
 - ✅ **API Documentation** - Complete endpoint docs
+- ✅ **Debug Bar** - Development debugging toolbar with performance monitoring
 
 ## 📁 Project Structure
 
@@ -29,6 +30,7 @@ A production-ready Raw PHP REST API Starter Kit with JWT authentication, user ma
 │   ├── controllers/     # Request handlers
 │   ├── core/           # Core framework classes
 │   ├── database/       # Migrations and seeders
+│   ├── debugbar/       # Debug bar system
 │   ├── exceptions/     # Exception handlers
 │   ├── helpers/        # Utility classes
 │   ├── middleware/     # Request middleware
@@ -56,6 +58,13 @@ composer install
 ```bash
 cp .env.example .env
 # Edit .env with your database credentials
+```
+
+**Debug Bar Configuration (Optional)**
+```bash
+# Enable debug bar for development
+DEBUGBAR_ENABLED=true
+DEBUGBAR_ALLOWED_IPS=127.0.0.1,::1
 ```
 
 ### 3. Database Setup
@@ -184,6 +193,65 @@ The HRMS includes the following tables:
 - Input sanitization and validation
 - CORS middleware
 - SQL injection protection (prepared statements)
+
+## 🔧 Debug Bar
+
+The built-in debug bar provides real-time development insights with minimal performance impact.
+
+### Features
+- **Performance Monitoring** - Execution time and memory usage tracking
+- **Database Queries** - All SQL queries with timing information
+- **Debug Messages** - Categorized logging (info, warning, error)
+- **Request Data** - HTTP method, URI, headers, and parameters
+- **Custom Timers** - Measure specific code execution times
+
+### Configuration
+
+Add to your `.env` file:
+```bash
+# Enable debug bar (disabled by default)
+DEBUGBAR_ENABLED=true
+
+# Optional: Restrict access by IP (comma-separated)
+DEBUGBAR_ALLOWED_IPS=127.0.0.1,::1,192.168.1.100
+```
+
+### Usage
+
+#### Debug Messages
+```php
+// Log debug messages with different levels
+debug('User login attempt', 'info');
+debug('Invalid credentials', 'warning');
+debug('Database connection failed', 'error');
+```
+
+#### Performance Timing
+```php
+// Measure execution time
+timer_start('api_call');
+// ... your code ...
+timer_stop('api_call');
+```
+
+#### Automatic Features
+- **Database Queries**: All PDO queries are automatically tracked
+- **Memory Usage**: Current and peak memory consumption
+- **Request Info**: HTTP method, URI, headers automatically captured
+
+### Output Modes
+
+**HTML Pages**: Debug toolbar appears at the bottom of the page
+**JSON APIs**: Debug data included in `X-Debugbar-Data` response header (Base64 encoded JSON)
+
+### Security
+- Automatically disabled when `DEBUGBAR_ENABLED=false`
+- IP whitelist support for production-like environments
+- No sensitive data exposure (credentials are filtered)
+- Zero performance impact when disabled
+
+### Test Debug Bar
+Visit `http://localhost:8000/welcome` to see the debug bar in action.
 
 ## 🧪 Testing
 

@@ -5,6 +5,8 @@ namespace App\Core;
 use PDO;
 use PDOException;
 use App\Core\Config;
+use App\DebugBar\DebugPDO;
+use App\DebugBar\DebugBar;
 
 class Database
 {
@@ -23,7 +25,11 @@ class Database
         $dsn = "{$db_connection}:host={$db_host};port={$db_port};dbname={$db_database}";
 
         try {
-            $this->connection = new PDO($dsn, $db_username, $db_password);
+            if (DebugBar::getInstance()->isEnabled()) {
+                $this->connection = new DebugPDO($dsn, $db_username, $db_password);
+            } else {
+                $this->connection = new PDO($dsn, $db_username, $db_password);
+            }
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         } catch (PDOException $e) {

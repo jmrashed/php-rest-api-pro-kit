@@ -27,4 +27,20 @@ class Env
     {
         return self::$variables[$key] ?? $default;
     }
+
+    public static function getLogLevel()
+    {
+        return self::get('LOG_LEVEL', 'INFO');
+    }
+
+    public static function isDebugBarEnabled(): bool
+    {
+        return self::get('DEBUGBAR_ENABLED', 'false') === 'true';
+    }
+
+    public static function getDebugBarAllowedIps(): array
+    {
+        $ips = self::get('DEBUGBAR_ALLOWED_IPS', '');
+        return $ips ? explode(',', $ips) : [];
+    }
 }

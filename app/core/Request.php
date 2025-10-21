@@ -13,8 +13,20 @@ class Request
     {
         $this->method = $_SERVER['REQUEST_METHOD'];
         $this->uri = $_SERVER['REQUEST_URI'];
-        $this->headers = getallheaders();
+        $this->headers = function_exists('getallheaders') ? getallheaders() : $this->getAllHeaders();
         $this->body = file_get_contents('php://input');
+    }
+
+    private function getAllHeaders()
+    {
+        $headers = [];
+        foreach ($_SERVER as $key => $value) {
+            if (strpos($key, 'HTTP_') === 0) {
+                $header = str_replace('_', '-', substr($key, 5));
+                $headers[$header] = $value;
+            }
+        }
+        return $headers;
     }
 
     public function getMethod()
