@@ -21,11 +21,13 @@ A production-ready Raw PHP REST API Starter Kit with JWT authentication, user ma
 - ✅ **PHPUnit Testing** - Comprehensive test suite
 - ✅ **API Documentation** - Complete endpoint docs
 - ✅ **Debug Bar** - Development debugging toolbar with performance monitoring
+- ✅ **CLI Support** - Command-line interface for development tasks
 
 ## 📁 Project Structure
 
 ```
 ├── app/
+│   ├── cli/            # CLI commands and console
 │   ├── config/          # Configuration files
 │   ├── controllers/     # Request handlers
 │   ├── core/           # Core framework classes
@@ -38,6 +40,7 @@ A production-ready Raw PHP REST API Starter Kit with JWT authentication, user ma
 │   ├── routes/         # Route definitions
 │   ├── services/       # Business logic
 │   └── tests/          # Test files
+├── console             # CLI entry point
 ├── bootstrap/          # Application bootstrap
 ├── docs/              # API documentation
 ├── public/            # Web server document root
@@ -78,22 +81,25 @@ php migrate.php fresh  # Creates database, runs migrations and seeders
 
 #### Migration Commands
 ```bash
-# Run migrations only
+# Using CLI (recommended)
+php console migrate
+php console migrate seed
+php console migrate rollback
+php console migrate fresh
+
+# Or legacy commands
 php migrate.php migrate
-
-# Run seeders only
 php migrate.php seed
-
-# Rollback all migrations
 php migrate.php rollback
-
-# Fresh migration (rollback + migrate + seed)
 php migrate.php fresh
 ```
 
 ### 4. Start Development Server
 ```bash
-# PHP Built-in Server
+# Using CLI command (recommended)
+php console serve
+
+# Or PHP Built-in Server
 php -S localhost:8000 -t public
 
 # Or with Docker
@@ -252,6 +258,55 @@ timer_stop('api_call');
 
 ### Test Debug Bar
 Visit `http://localhost:8000/welcome` to see the debug bar in action.
+
+## 💻 CLI Support
+
+The framework includes a powerful command-line interface for development tasks.
+
+### Available Commands
+
+```bash
+# Start development server
+php console serve [host] [port]
+
+# Database migrations
+php console migrate [fresh|rollback|seed]
+
+# Run tests
+php console test [specific-test-file]
+
+# Cache management
+php console cache clear
+
+# Generate files
+php console make controller ControllerName
+php console make model ModelName
+
+# Show help
+php console help
+```
+
+### Usage Examples
+
+```bash
+# Start server on custom host/port
+php console serve localhost 8080
+
+# Fresh migration with seeders
+php console migrate fresh
+
+# Generate a new controller
+php console make controller ProductController
+
+# Generate a new model
+php console make model Product
+
+# Run specific test
+php console test app/tests/Unit/UserTest.php
+
+# Clear application cache
+php console cache clear
+```
 
 ## 🧪 Testing
 

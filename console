@@ -1,0 +1,19 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/bootstrap/app.php';
+
+use App\Cli\Console;
+use App\Cli\Commands\{MigrateCommand, ServeCommand, TestCommand, CacheCommand, MakeCommand};
+
+$console = new Console();
+
+// Register commands
+$console->register(new MigrateCommand());
+$console->register(new ServeCommand());
+$console->register(new TestCommand());
+$console->register(new CacheCommand());
+$console->register(new MakeCommand());
+
+// Run console
+exit($console->run($argv));

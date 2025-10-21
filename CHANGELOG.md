@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2025-10-21
+
+### Added
+- **CLI Support** - Command-line interface for development tasks
+  - Console application with command registration system
+  - Built-in commands: serve, migrate, test, cache, make
+  - File generation: controllers and models
+  - Development server management
+  - Database migration management
+  - Test runner integration
+  - Cache management utilities
+  - Colored console output for better UX
+  - Cross-platform compatibility
+
+### Commands
+- `php console serve` - Start development server
+- `php console migrate [action]` - Database migrations
+- `php console test [file]` - Run PHPUnit tests
+- `php console cache clear` - Clear application cache
+- `php console make controller|model <name>` - Generate files
+- `php console help` - Show available commands
+
 ## [1.1.0] - 2025-10-21
 
 ### Added
