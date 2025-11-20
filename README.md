@@ -590,6 +590,24 @@ docker-compose logs -f app
 docker-compose down
 ```
 
+### Docker Services
+
+The Docker setup includes three services:
+
+- **App Service** - PHP 8.1 Apache server on `http://localhost:8000`
+- **Database Service** - MySQL 8.0 on port `3307`
+- **phpMyAdmin Service** - Web database interface on `http://localhost:8081`
+
+### Database Management
+
+Access phpMyAdmin at `http://localhost:8081` to manage your database:
+- **Server**: db
+- **Username**: root
+- **Password**: password
+- **Database**: test_db
+
+This provides a user-friendly web interface for database administration, table management, and query execution.
+
 ## 🛠️ Requirements
 
 - PHP 8.0+

@@ -21,9 +21,21 @@ services:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: test_db
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: password
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+
 volumes:
-  db_data:
+ db_data:

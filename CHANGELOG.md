@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0] - 2025-11-20
+
+### Added
+- **phpMyAdmin Integration** - Web-based database management interface
+  - Automatic phpMyAdmin service in Docker Compose
+  - Pre-configured connection to project database
+  - Access via http://localhost:8081
+  - Secure authentication with MySQL credentials
+
+### Improved
+- **Docker Configuration** - Enhanced containerized deployment
+  - Fixed environment variable loading in Config class
+  - Improved docker-entrypoint.sh for reliable startup
+  - Better database connection handling in containers
+  - Optimized migration execution during container startup
+
+### Fixed
+- **Environment Configuration** - Config class now properly reads Docker environment variables
+- **Docker Entrypoint** - Changed from 'fresh' to 'migrate' to avoid foreign key constraint issues
+- **Database Connection** - Resolved connection issues in Docker containers
+
+### Docker Services
+- **App Service** - PHP 8.1 Apache container on port 8000
+- **Database Service** - MySQL 8.0 container on port 3307
+- **phpMyAdmin Service** - Web interface on port 8081
+
 ## [1.4.0] - 2025-10-21
 
 ### Added

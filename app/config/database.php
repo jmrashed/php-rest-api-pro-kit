@@ -1,8 +1,8 @@
 <?php
-$servername = "localhost";
+$servername = "db";
 $username   = "root";
-$password   = "";
-$database   = "hrms_db";
+$password   = "password";
+$database   = "test_db";
 
 $conn = new mysqli($servername, $username, $password, $database);
 

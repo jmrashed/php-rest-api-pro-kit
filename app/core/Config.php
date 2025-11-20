@@ -27,6 +27,6 @@ class Config
 
     public static function get($key, $default = null)
     {
-        return self::$config[$key] ?? $default;
+        return getenv($key) ?: (self::$config[$key] ?? $default);
     }
 }
