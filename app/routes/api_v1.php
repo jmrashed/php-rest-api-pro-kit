@@ -2,8 +2,8 @@
 
 use App\Core\Router;
 use App\Controllers\V1\UserController;
-use App\Controllers\AuthController;
-use App\Controllers\HealthController;
+use App\Controllers\V1\AuthController;
+use App\Controllers\V1\HealthController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\CorsMiddleware;
 use App\Api\Versioning\ApiVersionMiddleware;
